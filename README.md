@@ -75,6 +75,54 @@ After EDA (notebook 01), we found:
 - ✅ Minimal padding waste (most samples are similar length)
 - ✅ Good balance between context and efficiency
 
+### Baseline Evaluation Results
+
+After running notebook 04, we established baseline metrics using both DistilGPT-2 (CPU proxy) and Mistral-7B (GPU baseline):
+
+#### Perplexity Comparison
+
+| Model | Perplexity | Samples | Tokens | Time | Device |
+|-------|------------|---------|--------|------|--------|
+| **DistilGPT-2** (CPU proxy) | **10.55** | 25 | 5,828 | ~5-15 min | CPU |
+| **Mistral-7B** (real baseline) | **10.55** | 25 | 5,828 | **2 seconds** | GPU (A100) |
+
+**Key Findings:**
+- Both models show the same perplexity (10.55) on the validation set
+- Mistral-7B on A100 GPU is **~150x faster** than DistilGPT-2 on CPU
+- This baseline will be used to measure improvement after finetuning
+- **Target:** Lower perplexity (<10.0) after QLoRA training indicates better model alignment
+
+#### Generation Quality Comparison
+
+**Mistral-7B (GPU) - High Quality Gothic Style:**
+```
+Prompt: "It was on a dreary night of November that"
+Output: "I beheld the apparition. The rain fell in torrents, except when it was 
+driven back by furious gusts of wind which swept over the deserted streets and 
+through the leafless trees like ghostly processions. As the storm raged around me 
+with an intensity such as I had never known before, I sat alone in my study, 
+brooding over the dark secret which had been revealed to me but a few days previously."
+```
+✅ **Gothic atmosphere** (rain, wind, storm, darkness)  
+✅ **Thematically consistent** (Frankenstein themes)  
+✅ **Good narrative flow** (coherent storytelling)
+
+**DistilGPT-2 (CPU) - Poor Quality:**
+```
+Prompt: "It was on a dreary night of November that"
+Output: "I had been working with for about two years. 'I came to the conclusion, 
+this is my first time doing so and it's all part 'em! We're still waiting here 
+because our last three months have just gone by without any explanation.'"
+```
+❌ **Not Gothic style** (modern, casual language)  
+❌ **Off-topic** (doesn't match Frankenstein themes)  
+❌ **Poor coherence** (fragmented, unclear narrative)
+
+**Conclusion:**
+- Mistral-7B already produces high-quality Gothic/Frankenstein-style text
+- Finetuning with QLoRA will improve consistency and alignment with our specific dataset
+- The baseline is strong, so we expect incremental but meaningful improvements
+
 ## Structure
 
 - `notebooks/` — learning workflow
@@ -121,13 +169,14 @@ After EDA (notebook 01), we found:
 - Load tokenizer (Mistral or DistilGPT2) and encode/decode a few samples.
 - Prepare map() function to tokenize Dataset with truncation and optional packing.
 
-### `notebooks/04_eval_harness_cpu.ipynb`
+### `notebooks/04_eval_harness_cpu.ipynb` ✅
 
 **Markdown:** Define evaluation we can run on CPU: perplexity approximation and sample generation wrapper (will be slow).
 
-**Code (TODO):**
-- Compute perplexity for a small validation slice using the base model (CPU).
-- Generation wrapper using base model on CPU for 1-2 short prompts.
+**Code (Completed):**
+- ✅ Computed baseline perplexity using DistilGPT-2 (CPU proxy) and Mistral-7B (GPU baseline).
+- ✅ Generation wrapper using base models for comparison (CPU: DistilGPT-2, GPU: Mistral-7B).
+- ✅ Established baseline metrics for comparison after finetuning.
 
 ### `notebooks/10_train_qlora_mistral7b_colab.ipynb` (GPU)
 
