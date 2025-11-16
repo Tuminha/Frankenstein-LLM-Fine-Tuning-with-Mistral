@@ -60,13 +60,13 @@ If you cannot use a GPU, use `notebooks/20_distilgpt2_cpu_finetune_optional.ipyn
 
 > Each notebook uses **Markdown for theory/explanations** and **TODO cells** with hints. No full solutions. End every TODO cell with an **Acceptance** checklist.
 
-### `notebooks/00_setup_cpu.ipynb`
+### `notebooks/00_setup_cpu.ipynb` ✅
 
 **Markdown:** Project overview, hybrid plan, environment set-up, how we'll use the Hub as a bus.
 
-**Code (TODO):**
-- Load YAML config from `configs/train.yaml` into a dict.
-- Create data folders if missing; place a `.gitkeep` in empty dirs.
+**Code (Completed):**
+- ✅ Load YAML config from `configs/train.yaml` into a dict with validation.
+- ✅ Create data folders if missing; place a `.gitkeep` in empty dirs.
 
 ### `notebooks/01_eda_dataset.ipynb`
 
