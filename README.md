@@ -32,7 +32,9 @@ If you cannot use a GPU, use `notebooks/20_distilgpt2_cpu_finetune_optional.ipyn
 
 ## Deliverables
 
-- Reproducible dataset on HF Hub (private ok)
+- ✅ **Reproducible dataset on HF Hub:** [`Tuminha/frankenstein-fanfic-snippets`](https://huggingface.co/datasets/Tuminha/frankenstein-fanfic-snippets) (private)
+  - 456 train samples, 25 validation samples (5% split)
+  - Ready for GPU training in Colab
 - QLoRA adapters on HF Hub
 - Model Card (`cards/MODEL_CARD_TEMPLATE.md` → paste to your Hub repo)
 - Space card (`cards/SPACE_CARD_TEMPLATE.md`) if you deploy a demo
@@ -103,13 +105,13 @@ After EDA (notebook 01), we found:
 - ✅ Plot length histogram in tokens and characters (saved to `images/length_distributions.png`).
 - ✅ Clean minimal issues: strip whitespace, drop empties/dupes, normalize quotes (481 → 481 rows after cleaning).
 
-### `notebooks/02_build_hf_dataset.ipynb`
+### `notebooks/02_build_hf_dataset.ipynb` ✅
 
 **Markdown:** Why use `datasets.Dataset`, train/val split strategy, pushing to Hub for portability.
 
-**Code (TODO):**
-- Convert DataFrame to DatasetDict with train/validation split.
-- (Optional) Push dataset to the HF Hub.
+**Code (Completed):**
+- ✅ Convert DataFrame to DatasetDict with train/validation split (456 train, 25 val, seed=42).
+- ✅ Push dataset to HF Hub: [`Tuminha/frankenstein-fanfic-snippets`](https://huggingface.co/datasets/Tuminha/frankenstein-fanfic-snippets) (private).
 
 ### `notebooks/03_tokenizer_sanity.ipynb`
 
