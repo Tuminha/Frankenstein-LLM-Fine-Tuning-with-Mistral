@@ -47,6 +47,32 @@ If you cannot use a GPU, use `notebooks/20_distilgpt2_cpu_finetune_optional.ipyn
 
 `frankenstein_chunks.csv` — short textual snippets (public domain). You are responsible for legal use of any extra data.
 
+### Dataset Analysis
+
+After EDA (notebook 01), we found:
+- **481 text snippets** (after cleaning: removed duplicates, normalized quotes)
+- **Token length distribution:** Right-skewed (slightly), approaching normal distribution
+
+<div align="center">
+
+<img src="images/length_distributions.png" alt="Token and Character Length Distributions" width="680" />
+
+</div>
+
+**What the right-skewed distribution means:**
+- Most snippets are relatively short (left side of distribution)
+- A smaller number of longer snippets create the right tail
+- This is **beneficial for training** because:
+  - Most samples fit comfortably within our 512-token limit
+  - Fewer truncations needed → less information loss
+  - Efficient batch packing during training
+  - The slight skew indicates natural variation in snippet lengths (realistic for fanfiction)
+
+**Implications for training:**
+- ✅ Most samples will use the full context window effectively
+- ✅ Minimal padding waste (most samples are similar length)
+- ✅ Good balance between context and efficiency
+
 ## Structure
 
 - `notebooks/` — learning workflow
@@ -68,14 +94,14 @@ If you cannot use a GPU, use `notebooks/20_distilgpt2_cpu_finetune_optional.ipyn
 - ✅ Load YAML config from `configs/train.yaml` into a dict with validation.
 - ✅ Create data folders if missing; place a `.gitkeep` in empty dirs.
 
-### `notebooks/01_eda_dataset.ipynb`
+### `notebooks/01_eda_dataset.ipynb` ✅
 
 **Markdown:** EDA goals: check text lengths, duplicates, non-ASCII, obvious noise; why EDA matters for LM training.
 
-**Code (TODO):**
-- Load CSV into a DataFrame; assert 'text' column exists and non-empty.
-- Plot length histogram in tokens (roughly) and characters.
-- Clean minimal issues: strip whitespace, drop empties/dupes, normalize quotes.
+**Code (Completed):**
+- ✅ Load CSV into a DataFrame; assert 'text' column exists and non-empty (481 rows loaded).
+- ✅ Plot length histogram in tokens and characters (saved to `images/length_distributions.png`).
+- ✅ Clean minimal issues: strip whitespace, drop empties/dupes, normalize quotes (481 → 481 rows after cleaning).
 
 ### `notebooks/02_build_hf_dataset.ipynb`
 
