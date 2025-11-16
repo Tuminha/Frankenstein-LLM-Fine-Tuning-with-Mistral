@@ -7,4 +7,5 @@ datasets
 huggingface_hub
 transformers
 accelerate
+python-dotenv
 
