@@ -178,16 +178,23 @@ because our last three months have just gone by without any explanation.'"
 - ✅ Generation wrapper using base models for comparison (CPU: DistilGPT-2, GPU: Mistral-7B).
 - ✅ Established baseline metrics for comparison after finetuning.
 
-### `notebooks/10_train_qlora_mistral7b_colab.ipynb` (GPU)
+### `notebooks/10_train_qlora_mistral7b_colab.ipynb` (GPU) ✅
 
 **Markdown:** What QLoRA is, what 4-bit quantization does, why T4 fits, hyperparameters in plain English, how to avoid OOM.
 
-**Code (TODO):**
-- Install GPU deps. Keep versions conservative. Verify CUDA is available.
-- Load dataset from HF Hub or local CSV; tokenize with seq_length from config.
-- Build 4-bit Mistral with BitsAndBytes and prepare for k-bit training.
-- Create LoRA config and TrainingArguments; run one epoch.
-- Push the adapter to the Hub (private ok).
+**Code (Completed):**
+- ✅ Installed GPU dependencies and verified CUDA availability (A100 GPU detected).
+- ✅ Loaded dataset from HF Hub (`Tuminha/frankenstein-fanfic-snippets`) - raw text format for SFTTrainer.
+- ✅ Built 4-bit Mistral-7B with BitsAndBytes (4-bit quantization, gradient checkpointing enabled).
+- ✅ Created LoRA config (r=8, alpha=16, dropout=0.05) and TrainingArguments; completed 1 epoch of training.
+- ✅ Pushed LoRA adapters to Hugging Face Hub.
+
+**Training Details:**
+- **Model:** Mistral-7B-Instruct-v0.2 with QLoRA (4-bit quantization)
+- **LoRA Configuration:** r=8, alpha=16, dropout=0.05, target_modules=['q_proj', 'k_proj', 'v_proj', 'o_proj']
+- **Training:** 1 epoch, batch_size=1, gradient_accumulation_steps=16 (effective batch size=16)
+- **Optimizer:** paged_adamw_8bit, learning_rate=2e-4, bf16 precision
+- **Note:** Validation loss is logged to training logs (wandb disabled for compatibility)
 
 ### `notebooks/11_evaluate_and_generate_gpu.ipynb` (GPU)
 
