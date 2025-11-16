@@ -1,0 +1,21 @@
+# Edit values in notebooks; commit final config here for reproducibility.
+dataset_csv: "data/raw/frankenstein_chunks.csv"
+hub_dataset_id: "YOURUSER/frankenstein-fanfic-snippets"   # TODO set
+base_model_mistral: "mistralai/Mistral-7B-Instruct-v0.2"
+base_model_distilgpt2: "distilgpt2"
+seq_length: 512
+val_split: 0.05
+qlora:
+  r: 8
+  alpha: 16
+  dropout: 0.05
+  target_modules: ["q_proj","k_proj","v_proj","o_proj"]
+  lr: 2.0e-4
+  grad_accum: 16
+  epochs: 1
+  use_bfloat16: true
+distilgpt2:
+  lr: 5.0e-5
+  batch_size: 8
+  epochs: 2
+
