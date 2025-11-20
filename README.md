@@ -35,15 +35,16 @@ If you cannot use a GPU, use `notebooks/20_distilgpt2_cpu_finetune_optional.ipyn
 - ✅ **Reproducible dataset on HF Hub:** [`Tuminha/frankenstein-fanfic-snippets`](https://huggingface.co/datasets/Tuminha/frankenstein-fanfic-snippets) (private)
   - 456 train samples, 25 validation samples (5% split)
   - Ready for GPU training in Colab
-- QLoRA adapters on HF Hub
+- ✅ **QLoRA adapters on HF Hub:** [`Tuminha/mistral-frankenstein-qlora`](https://huggingface.co/Tuminha/mistral-frankenstein-qlora)
 - Model Card (`cards/MODEL_CARD_TEMPLATE.md` → paste to your Hub repo)
 - Space card (`cards/SPACE_CARD_TEMPLATE.md`) if you deploy a demo
 
 ## Evaluation
 
-- Perplexity on validation before vs after finetune
-- Qualitative samples: 3–5 prompts, short continuations
-- Document hyperparameters/cost/latency
+- ✅ **Perplexity on validation:** Base 7.95 → Finetuned 7.95 (no improvement detected - see analysis)
+- ⏳ **Qualitative samples:** Generation comparison implemented (ready to run)
+- ✅ **Hyperparameters documented:** See training section and `configs/train.yaml`
+- 📊 **Detailed analysis:** See `ANALYSIS_perplexity_results.md` for comprehensive findings
 
 ## Data
 
@@ -196,13 +197,40 @@ because our last three months have just gone by without any explanation.'"
 - **Optimizer:** paged_adamw_8bit, learning_rate=2e-4, bf16 precision
 - **Note:** Validation loss is logged to training logs (wandb disabled for compatibility)
 
-### `notebooks/11_evaluate_and_generate_gpu.ipynb` (GPU)
+### `notebooks/11_evaluate_and_generate_gpu.ipynb` (GPU) ✅
 
 **Markdown:** Compare base vs finetuned: perplexity and qualitative generations; document results and caveats.
 
-**Code (TODO):**
-- Load base model + attach LoRA adapters; run perplexity on validation slice.
-- Generate 3-5 short continuations with both models for side-by-side comparison.
+**Code (Completed):**
+- ✅ Loaded base model + attached LoRA adapters; computed perplexity on validation slice.
+- ✅ Implemented diagnostic code to verify adapters are loaded and active.
+- ✅ Generated side-by-side comparisons with both models (implementation complete, ready to run).
+
+**Evaluation Results:**
+
+#### Perplexity Comparison (After QLoRA Training)
+
+| Model | Perplexity | Samples | Time | Device |
+|-------|------------|---------|------|--------|
+| **Base Mistral-7B** | **7.95** | 25 | ~0.3 min | GPU (L4) |
+| **Finetuned Mistral-7B** | **7.95** | 25 | ~0.3 min | GPU (L4) |
+| **Improvement** | **0.00** | - | - | - |
+
+**Key Findings:**
+- ⚠️ **Identical perplexity scores** - No measurable improvement detected
+- Training completed: 1 epoch, 29 steps (456 samples, effective batch size=16)
+- Loss reduction: 2.23 → 2.07 (~7% reduction during training)
+- **Possible explanations:**
+  1. Adapters may not be fully active during evaluation (diagnostic code added to verify)
+  2. Training duration may be insufficient (only 1 epoch)
+  3. Small dataset (456 samples) with minimal loss reduction
+  4. Base model already performs well on the task (perplexity 7.95 is quite low)
+
+**Next Steps:**
+- Run diagnostic code to verify adapters are active
+- Compare qualitative generation outputs (style differences may exist even with identical perplexity)
+- Consider training for more epochs (3-5) or increasing LoRA rank (r=16 or r=32)
+- See `ANALYSIS_perplexity_results.md` for detailed analysis and recommendations
 
 ### `notebooks/20_distilgpt2_cpu_finetune_optional.ipynb` (CPU fallback)
 
