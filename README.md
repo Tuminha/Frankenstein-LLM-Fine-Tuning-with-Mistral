@@ -204,6 +204,10 @@ because our last three months have just gone by without any explanation.'"
 **Code (Completed):**
 - ✅ Loaded base model + attached LoRA adapters; computed perplexity on validation slice.
 - ✅ Implemented diagnostic code to verify adapters are loaded and active.
+- ✅ Added adapter merging/activation attempts for 4-bit quantized models.
+- ✅ Enhanced diagnostic messages with detailed explanations for identical logits.
+- ✅ Fixed security issue: removed hardcoded token, now uses environment variables or `HfFolder.get_token()`.
+- ✅ Updated installation cell with Python version check and comprehensive package installation.
 - ✅ Generated side-by-side comparisons with both models (implementation complete, ready to run).
 
 **Evaluation Results:**
@@ -225,6 +229,13 @@ because our last three months have just gone by without any explanation.'"
   2. Training duration may be insufficient (only 1 epoch)
   3. Small dataset (456 samples) with minimal loss reduction
   4. Base model already performs well on the task (perplexity 7.95 is quite low)
+  5. 4-bit quantization compatibility issues with PEFT adapter activation
+
+**Improvements Made:**
+- ✅ Removed hardcoded Hugging Face token (security fix)
+- ✅ Added adapter merging/activation attempts for better inference
+- ✅ Enhanced diagnostic messages with detailed troubleshooting guidance
+- ✅ Updated installation requirements (bitsandbytes>=0.42.0, Python version check)
 
 **Next Steps:**
 - Run diagnostic code to verify adapters are active

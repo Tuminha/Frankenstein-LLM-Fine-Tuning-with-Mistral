@@ -3,7 +3,8 @@ transformers<4.45
 datasets
 peft
 accelerate>=0.27
-bitsandbytes
+# 4-bit quantization needs the newer bitsandbytes wheels; older releases fail
+# with `ImportError` when loading quantized models.
+bitsandbytes>=0.42.0
 trl
 huggingface_hub
-
