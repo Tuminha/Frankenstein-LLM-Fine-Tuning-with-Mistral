@@ -22,9 +22,18 @@ pip install -r requirements-cpu.txt
 
 ### GPU run (Colab/Kaggle)
 
+**For Training (Notebook 10):**
 1. Open `notebooks/10_train_qlora_mistral7b_colab.ipynb` in Colab.
-2. Runtime → GPU (T4).
+2. Runtime → Change runtime type → GPU (T4 or better).
 3. Follow cells to install deps, pull dataset from Hub, train LoRA adapters, and push them back.
+
+**For Evaluation (Notebook 11):**
+1. Open `notebooks/11_evaluate_and_generate_gpu.ipynb` in Colab.
+2. **IMPORTANT:** Runtime → Change runtime type → Python version → Select **3.11** (NOT 3.12).
+3. Runtime → Change runtime type → GPU (T4 or better).
+4. Run Cell 1 first (installation cell) - it will check Python version and install compatible packages.
+5. If you encounter `triton.ops` errors, the installation cell will attempt to fix it automatically.
+6. Follow the remaining cells to evaluate the finetuned model.
 
 ### Fallback: DistilGPT-2 on CPU
 
@@ -207,7 +216,9 @@ because our last three months have just gone by without any explanation.'"
 - ✅ Added adapter merging/activation attempts for 4-bit quantized models.
 - ✅ Enhanced diagnostic messages with detailed explanations for identical logits.
 - ✅ Fixed security issue: removed hardcoded token, now uses environment variables or `HfFolder.get_token()`.
-- ✅ Updated installation cell with Python version check and comprehensive package installation.
+- ✅ **Comprehensive installation cell** with Python version check (requires 3.10 or 3.11, not 3.12).
+- ✅ **Fixed triton.ops compatibility issue** - automatically detects and fixes triton/bitsandbytes version conflicts.
+- ✅ **Enhanced error handling** with step-by-step troubleshooting guidance for common Colab issues.
 - ✅ Generated side-by-side comparisons with both models (implementation complete, ready to run).
 
 **Evaluation Results:**
@@ -232,10 +243,32 @@ because our last three months have just gone by without any explanation.'"
   5. 4-bit quantization compatibility issues with PEFT adapter activation
 
 **Improvements Made:**
-- ✅ Removed hardcoded Hugging Face token (security fix)
+- ✅ **Security fix:** Removed hardcoded Hugging Face token (now uses environment variables or `HfFolder.get_token()`)
+- ✅ **Python 3.12 compatibility:** Added version check with clear instructions to use Python 3.11 in Colab
+- ✅ **Triton.ops fix:** Automatically detects and fixes `ModuleNotFoundError: No module named 'triton.ops'` compatibility issues
+- ✅ **Comprehensive installation:** Installation cell now verifies all packages, tests bitsandbytes import, and provides clear error messages
+- ✅ **Enhanced error handling:** Specific error messages for triton.ops issues with step-by-step solutions
+- ✅ **Package version pinning:** Pinned triton to `>=2.1.0,<2.2.0` to avoid compatibility issues
 - ✅ Added adapter merging/activation attempts for better inference
 - ✅ Enhanced diagnostic messages with detailed troubleshooting guidance
-- ✅ Updated installation requirements (bitsandbytes>=0.42.0, Python version check)
+
+**Troubleshooting Common Issues:**
+
+If you encounter errors in Colab:
+
+1. **`ModuleNotFoundError: No module named 'triton.ops'`:**
+   - This is a compatibility issue between triton and bitsandbytes versions
+   - **Solution:** The installation cell (Cell 1) will automatically detect and fix this
+   - If it persists: Restart runtime → Rerun Cell 1 → Continue
+
+2. **Python 3.12 detected:**
+   - bitsandbytes doesn't support Python 3.12 yet
+   - **Solution:** Runtime → Change runtime type → Python version → Select 3.11
+   - Then restart runtime and rerun Cell 1
+
+3. **Import errors after installation:**
+   - Always restart the runtime after installing packages
+   - **Solution:** Runtime → Restart runtime → Rerun Cell 1 → Continue
 
 **Next Steps:**
 - Run diagnostic code to verify adapters are active
